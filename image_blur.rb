@@ -6,6 +6,7 @@ class Image
 
   def output_image
     @image.each do |row|
+      #why does this print each item out separately without the join function?
       puts row.join
     end
   end
