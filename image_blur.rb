@@ -11,25 +11,29 @@ class Image
     end
   end
 
-  def image_transform
+  def get_ones
 
-    # find each 1
     ones = []
-    row_max = @image[0].length - 1
-    column_max = @image.length - 1
-
     @image.each_with_index do |row, column|
-
       row.each_with_index do |item, item_index|
         if item == 1
           ones.push([item_index, column])
         end
       end
-
     end
 
+    return ones
+
+  end
+
+  def image_transform
+
+    row_max = @image[0].length - 1
+    column_max = @image.length - 1
+
+    ones = self.get_ones
+
     ones.each do |one|
-      # write individual if statements for each to make sure they do not go out of bounds?
       vert = one[1]
       horiz = one[0]
 
@@ -61,7 +65,8 @@ image = Image.new([
   [0, 0, 0, 0]
 ])
 
+puts 'original image:'
 image.output_image
 image.image_transform
-puts '/'
+puts 'new image:'
 image.output_image
