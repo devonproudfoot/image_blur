@@ -19,9 +19,13 @@ class Image
     column_max = @image.length - 1
 
     @image.each_with_index do |row, column|
-      if row.include?(1)
-        ones.push([row.index(1), column])
+
+      row.each_with_index do |item, item_index|
+        if item == 1
+          ones.push([item_index, column])
+        end
       end
+
     end
 
     ones.each do |one|
@@ -53,7 +57,7 @@ end
 image = Image.new([
   [0, 0, 0, 0],
   [0, 1, 0, 0],
-  [0, 0, 0, 1],
+  [0, 0, 1, 1],
   [0, 0, 0, 0]
 ])
 
