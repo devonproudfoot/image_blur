@@ -15,33 +15,37 @@ class Image
 
     # find each 1
     ones = []
-    y = 0
-    while y < @image.length
-      @image.each do |row|
-        y += 1
-        if row.include?(1)
-          x = row.index(1) + 1
-          ones.push([x, y])
-        end
+    row_max = @image[0].length - 1
+    column_max = @image.length - 1
+
+    @image.each_with_index do |row, column|
+      if row.include?(1)
+        ones.push([row.index(1), column])
       end
     end
 
-    # do the actual transformation
     ones.each do |one|
-      puts one.inspect
-      if !(one[0] = @image[0].length)
-        puts 'ok'
-        @image[one[1]][one[0 + 1]] = 1
-      elsif !(one[0] = 0)
-        @image[one[1]][one[0 - 1]] = 1
-      elsif not one[1] = @image.length
-        @image[one[1] + 1][one[0]] = 1
-      elsif not one[1] = 0
-        @image[one[1] - 1][one[0]] = 1
+      # write individual if statements for each to make sure they do not go out of bounds?
+      vert = one[1]
+      horiz = one[0]
+
+      unless vert == column_max
+        @image[vert + 1][horiz] = 1
+      end
+
+      unless vert == 0
+        @image[vert - 1][horiz] = 1
+      end
+
+      unless horiz == row_max
+        @image[vert][horiz + 1] = 1
+      end
+
+      unless horiz == 0
+        @image[vert][horiz - 1] = 1
       end
 
     end
-
   end
 
 end
