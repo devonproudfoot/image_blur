@@ -36,24 +36,48 @@ class Image
       ones.each do |one|
         vert = one[1]
         horiz = one[0]
-        # up 
-        unless vert + distance > column_max
-          @image[vert + distance][horiz] = 1
-        end
+        
+        # down 
+        @image[vert + distance][horiz] = 1 unless vert + distance > column_max
 
-        #down
-        unless vert - distance < 0
-          @image[vert - distance][horiz] = 1
-        end
+        # up
+        @image[vert - distance][horiz] = 1 unless vert - distance < 0
 
         # right
-        unless horiz + distance > row_max
-          @image[vert][horiz + distance] = 1
-        end
+        @image[vert][horiz + distance] = 1 unless horiz + distance > row_max
 
         # left
-        unless horiz - distance < 0
-          @image[vert][horiz - distance] = 1
+        @image[vert][horiz - distance] = 1 unless horiz - distance < 0
+
+        sub_distance = distance
+        while sub_distance > 1
+
+          # bottom sides
+          unless vert + sub_distance - 1 > column_max || horiz - 1 < 0 || horiz + 1 > row_max
+            @image[vert + sub_distance - 1][horiz - 1] = 1
+            @image[vert + sub_distance - 1][horiz + 1] = 1    
+          end
+
+          # top
+          unless vert - sub_distance + 1 < 0 || horiz - 1 < 0 || horiz + 1 > row_max
+            @image[vert - sub_distance + 1][horiz - 1] = 1
+            @image[vert - sub_distance + 1][horiz + 1] = 1
+          end
+
+          # right sides
+          unless vert - 1 < 0 || vert + 1 > column_max || horiz + sub_distance - 1 > column_max
+            @image[vert - 1][horiz + sub_distance - 1] = 1
+            @image[vert + 1][horiz + sub_distance - 1] = 1
+          end
+
+          # left sides
+          unless vert - 1 < 0 || vert + 1 > column_max || horiz + sub_distance - 1 < 0
+            @image[vert - 1][horiz - sub_distance + 1] = 1
+            @image[vert + 1][horiz - sub_distance + 1] = 1
+          end
+
+          sub_distance -= 1
+
         end
       end
 
@@ -76,25 +100,25 @@ image1 = Image.new([
 image2 = Image.new([
   [0, 0, 0, 0, 0, 1, 0, 0],
   [0, 1, 0, 0, 0, 0, 0, 0],
-  [0, 0, 1, 1, 0, 0, 0, 1],
+  [0, 0, 1, 0, 0, 0, 0, 1],
   [0, 0, 0, 0, 0, 0, 0, 0]
 ])
 
 # monster image
 image3 = Image.new([
-  [0, 0, 0, 0, 0, 1, 0, 0],
-  [0, 1, 0, 0, 0, 0, 0, 0],
-  [0, 0, 1, 1, 0, 0, 0, 1],
   [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 1, 0, 0],
-  [0, 1, 0, 0, 0, 0, 0, 0],
-  [0, 0, 1, 0, 0, 0, 0, 1],
-  [0, 0, 0, 0, 0, 1, 0, 0]
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0]
 ])
 
 puts 'original image 1:'
 image1.output_image
-image1.blur(2)
+image1.blur(1)
 puts 'new image 1:'
 image1.output_image
 
@@ -106,7 +130,7 @@ image2.output_image
 
 puts 'original image 3:'
 image3.output_image
-image3.blur(2)
+image3.blur(3)
 puts 'new image 3:'
 image3.output_image
 
