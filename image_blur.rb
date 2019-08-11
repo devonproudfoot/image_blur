@@ -50,33 +50,35 @@ class Image
         @image[vert][horiz - distance] = 1 unless horiz - distance < 0
 
         sub_distance = distance
+        diag = 1
         while sub_distance > 1
 
           # bottom sides
-          unless vert + sub_distance - 1 > column_max || horiz - 1 < 0 || horiz + 1 > row_max
-            @image[vert + sub_distance - 1][horiz - 1] = 1
-            @image[vert + sub_distance - 1][horiz + 1] = 1    
+          unless vert + sub_distance - 1 > column_max || horiz - diag < 0 || horiz + diag > row_max
+            @image[vert + sub_distance - 1][horiz - diag] = 1
+            @image[vert + sub_distance - 1][horiz + diag] = 1    
           end
 
           # top
-          unless vert - sub_distance + 1 < 0 || horiz - 1 < 0 || horiz + 1 > row_max
-            @image[vert - sub_distance + 1][horiz - 1] = 1
-            @image[vert - sub_distance + 1][horiz + 1] = 1
+          unless vert - sub_distance + 1 < 0 || horiz - diag < 0 || horiz + diag > row_max
+            @image[vert - sub_distance + 1][horiz - diag] = 1
+            @image[vert - sub_distance + 1][horiz + diag] = 1
           end
 
           # right sides
-          unless vert - 1 < 0 || vert + 1 > column_max || horiz + sub_distance - 1 > column_max
-            @image[vert - 1][horiz + sub_distance - 1] = 1
-            @image[vert + 1][horiz + sub_distance - 1] = 1
+          unless vert - diag < 0 || vert + diag > column_max || horiz + sub_distance - 1 > column_max
+            @image[vert - 1][horiz + sub_distance - diag] = 1
+            @image[vert + 1][horiz + sub_distance - diag] = 1
           end
 
           # left sides
-          unless vert - 1 < 0 || vert + 1 > column_max || horiz + sub_distance - 1 < 0
-            @image[vert - 1][horiz - sub_distance + 1] = 1
-            @image[vert + 1][horiz - sub_distance + 1] = 1
+          unless vert - diag < 0 || vert + diag > column_max || horiz + sub_distance - 1 < 0
+            @image[vert - 1][horiz - sub_distance + diag] = 1
+            @image[vert + 1][horiz - sub_distance + diag] = 1
           end
 
           sub_distance -= 1
+          diag += 1
 
         end
       end
@@ -106,14 +108,18 @@ image2 = Image.new([
 
 # monster image
 image3 = Image.new([
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 1, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0]
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ])
 
 puts 'original image 1:'
@@ -130,7 +136,7 @@ image2.output_image
 
 puts 'original image 3:'
 image3.output_image
-image3.blur(3)
+image3.blur(5)
 puts 'new image 3:'
 image3.output_image
 
